@@ -1,0 +1,10 @@
+spring:
+  rabbitmq:
+    username: invalid
+    password: invalid
+  cloud:
+    stream:
+      bindings:
+        myChannel:
+          destination: myExchange
+          group: myQueue
