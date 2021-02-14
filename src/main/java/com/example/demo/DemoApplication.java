@@ -2,27 +2,28 @@ package com.example.demo;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cloud.stream.annotation.EnableBinding;
-import org.springframework.cloud.stream.annotation.Input;
-import org.springframework.cloud.stream.annotation.StreamListener;
-import org.springframework.messaging.MessageChannel;
-import org.springframework.messaging.handler.annotation.Payload;
+import org.springframework.cloud.stream.binder.BindingCreatedEvent;
+import org.springframework.context.ApplicationListener;
+import org.springframework.context.annotation.Bean;
+
+import java.util.function.Consumer;
 
 @SpringBootApplication
-@EnableBinding(DemoApplication.Source.class)
 public class DemoApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(DemoApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(DemoApplication.class, args);
+    }
 
-	interface Source {
-		@Input("myChannel")
-		MessageChannel input();
-	}
+    @Bean
+    public Consumer<String> consumer() {
+        return System.out::println;
+    }
 
-	@StreamListener("myChannel")
-	protected void consumer(@Payload String message) {
-		System.out.println(message);
-	}
+    @Bean
+    public ApplicationListener<BindingCreatedEvent> bindingCreatedEventListener() {
+        return bindingCreatedEvent -> {
+            throw new RuntimeException("Test");
+        };
+    }
 }

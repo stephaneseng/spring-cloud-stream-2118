@@ -1,10 +1,10 @@
 spring:
   rabbitmq:
-    username: invalid
-    password: invalid
+    username: guest
+    password: guest
   cloud:
     stream:
       bindings:
-        myChannel:
-          destination: myExchange
-          group: myQueue
+        consumer-in-0:
+          destination: exchange
+          group: queue
